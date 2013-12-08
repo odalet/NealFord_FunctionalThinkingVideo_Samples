@@ -5,7 +5,7 @@ namespace NealFordFt
 {
     internal class Program
     {
-        private const string INVALID_ROMAN_NUMERAL = "Invalid Roman numeral";
+        private const string invalidRomanNumeral = "Invalid Roman numeral";
 
         /// <summary>
         /// Defines the entry point of the application.
@@ -30,12 +30,20 @@ namespace NealFordFt
             RunTest(parse_lazy_exception, "parse_lazy_exception");
             RunTest(parse_defaults_normal, "parse_defaults_normal");
             RunTest(parse_defaults_triggered, "parse_defaults_triggered");
+            RunTest(zero_as_right_sucess, "zero_as_right_sucess");
             Console.WriteLine("Done.");
             Console.ReadKey();
         }
 
 
         #region Actual Tests
+
+        public void zero_as_right_sucess()
+        {
+            var e = Either<Exception, int>.MakeRight(0);
+            AssertEquals(true, e.IsRight);
+            AssertEquals(0, e.Right);
+        }
 
         public void maps_success()
         {
@@ -80,7 +88,7 @@ namespace NealFordFt
         public void parsing_failure()
         {
             var result = RomanNumeralParser.ParseNumber("FOO");     
-            AssertEquals(INVALID_ROMAN_NUMERAL, result.Left.Message);
+            AssertEquals(invalidRomanNumeral, result.Left.Message);
         }
 
         public void parse_lazy()
@@ -93,7 +101,7 @@ namespace NealFordFt
         {
             var result = RomanNumeralParser.ParseNumberLazy("FOO");
             AssertEquals(true, result().IsLeft);
-            AssertEquals(INVALID_ROMAN_NUMERAL, result().Left.Message);
+            AssertEquals(invalidRomanNumeral, result().Left.Message);
         }
 
         public void parse_defaults_normal()
